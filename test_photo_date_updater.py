@@ -64,7 +64,7 @@ class TestPhotoDateUpdater(unittest.TestCase):
             self.assertTrue(is_supported_format(filename.upper()), f"Should support {ext.upper()}")
 
         # Test unsupported formats
-        unsupported_formats = ['.txt', '.pdf', '.doc', '.mp4', '.mov', '.avi']
+        unsupported_formats = ['.txt', '.pdf', '.doc', '.wmv', '.flv', '.webm']
         for ext in unsupported_formats:
             filename = f"test{ext}"
             self.assertFalse(is_supported_format(filename), f"Should not support {ext}")
@@ -265,7 +265,7 @@ class TestPhotoDateUpdater(unittest.TestCase):
 
     def test_supported_formats(self):
         """Test that all expected formats are supported."""
-        expected_formats = {'.jpg', '.jpeg', '.tiff', '.tif', '.png', '.heic', '.heif', '.cr2', '.nef', '.arw'}
+        expected_formats = {'.jpg', '.jpeg', '.tiff', '.tif', '.png', '.heic', '.heif', '.cr2', '.nef', '.arw', '.mp4', '.mov', '.avi', '.mkv'}
         self.assertEqual(SUPPORTED_FORMATS, expected_formats)
 
     def test_exif_date_tags_order(self):

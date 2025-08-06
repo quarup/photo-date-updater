@@ -26,8 +26,8 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-# Supported image formats
-SUPPORTED_FORMATS = {'.jpg', '.jpeg', '.tiff', '.tif', '.png', '.heic', '.heif', '.cr2', '.nef', '.arw'}
+# Supported image and video formats
+SUPPORTED_FORMATS = {'.jpg', '.jpeg', '.tiff', '.tif', '.png', '.heic', '.heif', '.cr2', '.nef', '.arw', '.mp4', '.mov', '.avi', '.mkv'}
 
 # EXIF date tags to check in order of preference
 EXIF_DATE_TAGS = [
@@ -38,20 +38,47 @@ EXIF_DATE_TAGS = [
     'EXIF SubSecTime'
 ]
 
+# Video metadata tags to check
+VIDEO_DATE_TAGS = [
+    'QuickTime CreateDate',
+    'QuickTime DateTimeOriginal',
+    'QuickTime DateTime',
+    'QuickTime CreationDate'
+]
+
 def is_supported_format(file_path):
     """Check if the file is a supported image format."""
     return Path(file_path).suffix.lower() in SUPPORTED_FORMATS
 
 def get_exif_date(file_path):
     """
-    Extract the date from EXIF metadata of an image file.
+    Extract the date from EXIF metadata of an image or video file.
     Returns a datetime object or None if no date found.
     """
     try:
         with open(file_path, 'rb') as f:
             tags = exifread.process_file(f, details=False)
         
-        # Try to find a date in the EXIF tags
+        file_ext = Path(file_path).suffix.lower()
+        
+        # For video files, check video metadata tags first
+        if file_ext in {'.mp4', '.mov', '.avi', '.mkv'}:
+            for tag in VIDEO_DATE_TAGS:
+                if tag in tags:
+                    date_str = str(tags[tag])
+                    try:
+                        # Video dates might be in different formats
+                        # Try common video date formats
+                        for fmt in ['%Y:%m:%d %H:%M:%S', '%Y-%m-%d %H:%M:%S', '%Y/%m/%d %H:%M:%S']:
+                            try:
+                                return datetime.strptime(date_str, fmt)
+                            except ValueError:
+                                continue
+                        logger.warning(f"Could not parse video date '{date_str}' from {file_path}")
+                    except Exception:
+                        continue
+        
+        # For image files, check EXIF tags
         for tag in EXIF_DATE_TAGS:
             if tag in tags:
                 date_str = str(tags[tag])
@@ -62,11 +89,15 @@ def get_exif_date(file_path):
                     logger.warning(f"Could not parse date '{date_str}' from {file_path}")
                     continue
         
-        logger.warning(f"No valid EXIF date found in {file_path}")
+        # For PNG files, provide specific message
+        if file_ext == '.png':
+            logger.warning(f"No EXIF date found in PNG file {file_path} - PNG files typically don't contain EXIF metadata")
+        else:
+            logger.warning(f"No valid date metadata found in {file_path}")
         return None
         
     except Exception as e:
-        logger.error(f"Error reading EXIF data from {file_path}: {e}")
+        logger.error(f"Error reading metadata from {file_path}: {e}")
         return None
 
 def update_creation_date(file_path, date):

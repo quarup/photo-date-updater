@@ -13,11 +13,18 @@ A Python script that updates the metadata creation date of photo files in a dire
 
 ## Supported Formats
 
+### Image Formats
 - JPEG (.jpg, .jpeg)
-- PNG (.png)
+- PNG (.png) - Note: PNG files typically don't contain EXIF metadata
 - TIFF (.tiff, .tif)
 - HEIC/HEIF (.heic, .heif)
 - RAW formats (.cr2, .nef, .arw)
+
+### Video Formats
+- MP4 (.mp4)
+- MOV (.mov)
+- AVI (.avi)
+- MKV (.mkv)
 
 ## Requirements
 
