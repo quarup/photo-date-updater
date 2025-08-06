@@ -36,8 +36,10 @@ def inspect_file_metadata(file_path):
     Inspect all metadata tags in a file and return them organized by category.
     """
     try:
+        logger.debug(f"Attempting to read metadata from: {file_path}")
         with open(file_path, 'rb') as f:
             tags = exifread.process_file(f, details=True)
+        logger.debug(f"Opened: {file_path}")
         
         if not tags:
             logger.warning(f"No metadata tags found in {file_path}")
@@ -72,7 +74,12 @@ def inspect_file_metadata(file_path):
         }
         
     except Exception as e:
-        logger.error(f"Error reading metadata from {file_path}: {e}")
+        error_msg = str(e)
+        if "File format not recognized" in error_msg:
+            logger.warning(f"File format not recognized by exifread: {file_path}")
+            logger.debug(f"Full error: {error_msg}")
+        else:
+            logger.error(f"Error reading metadata from {file_path}: {error_msg}")
         return None
 
 def print_metadata_summary(file_path, metadata):

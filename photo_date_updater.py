@@ -48,7 +48,11 @@ VIDEO_DATE_TAGS = [
 
 def is_supported_format(file_path):
     """Check if the file is a supported image format."""
-    return Path(file_path).suffix.lower() in SUPPORTED_FORMATS
+    suffix = Path(file_path).suffix.lower()
+    is_supported = suffix in SUPPORTED_FORMATS
+    if not is_supported:
+        logger.debug(f"File format not recognized: {file_path} (suffix: '{suffix}')")
+    return is_supported
 
 def get_exif_date(file_path):
     """
@@ -97,7 +101,12 @@ def get_exif_date(file_path):
         return None
         
     except Exception as e:
-        logger.error(f"Error reading metadata from {file_path}: {e}")
+        error_msg = str(e)
+        if "File format not recognized" in error_msg:
+            logger.warning(f"File format not recognized by exifread: {file_path}")
+            logger.debug(f"Full error: {error_msg}")
+        else:
+            logger.error(f"Error reading metadata from {file_path}: {error_msg}")
         return None
 
 def update_creation_date(file_path, date):
