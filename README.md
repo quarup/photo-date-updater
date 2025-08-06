@@ -31,7 +31,7 @@ A Python script that updates the metadata creation date of photo files in a dire
 2. Install the required dependencies:
 
 ```bash
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 ## Usage
@@ -39,7 +39,7 @@ pip install -r requirements.txt
 ### Basic Usage
 
 ```bash
-python photo_date_updater.py /path/to/your/photos
+python3 photo_date_updater.py /path/to/your/photos
 ```
 
 ### Dry Run (Test Mode)
@@ -47,7 +47,7 @@ python photo_date_updater.py /path/to/your/photos
 To see what changes would be made without actually making them:
 
 ```bash
-python photo_date_updater.py /path/to/your/photos --dry-run
+python3 photo_date_updater.py /path/to/your/photos --dry-run
 ```
 
 ### Verbose Logging
@@ -55,20 +55,20 @@ python photo_date_updater.py /path/to/your/photos --dry-run
 For more detailed output:
 
 ```bash
-python photo_date_updater.py /path/to/your/photos --verbose
+python3 photo_date_updater.py /path/to/your/photos --verbose
 ```
 
 ### Examples
 
 ```bash
 # Update photos in your Pictures folder
-python photo_date_updater.py ~/Pictures
+python3 photo_date_updater.py ~/Pictures
 
 # Test run on a specific album
-python photo_date_updater.py ~/Pictures/Vacation2023 --dry-run
+python3 photo_date_updater.py ~/Pictures/Vacation2023 --dry-run
 
 # Verbose output for debugging
-python photo_date_updater.py ~/Pictures --verbose
+python3 photo_date_updater.py ~/Pictures --verbose
 ```
 
 ## How It Works
