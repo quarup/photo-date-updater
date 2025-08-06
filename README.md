@@ -90,6 +90,21 @@ python3 photo_date_updater.py ~/Pictures/Vacation2023 --dry-run
 python3 photo_date_updater.py ~/Pictures --verbose
 ```
 
+## Metadata Inspection Tool
+
+Use the included metadata inspector to see what date tags are available in your files:
+
+```bash
+# Inspect a single file
+python3 inspect_metadata.py photo.jpg
+python3 inspect_metadata.py video.mp4
+
+# Inspect all files in a directory
+python3 inspect_metadata.py /path/to/photos --recursive
+```
+
+This tool will show you all available metadata tags organized by category (date/time, camera, video, etc.), helping you understand what date information is available in your files.
+
 ## How It Works
 
 1. **EXIF Date Extraction**: The script reads EXIF metadata from image files and extracts the date when the photo was taken. It checks multiple EXIF date fields in order of preference:
