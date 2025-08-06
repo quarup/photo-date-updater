@@ -34,6 +34,18 @@ A Python script that updates the metadata creation date of photo files in a dire
 pip3 install -r requirements.txt
 ```
 
+## Testing
+
+Run the test suite to verify everything works correctly:
+
+```bash
+# Run all tests
+python3 run_tests.py
+
+# Or run tests directly
+python3 -m unittest test_photo_date_updater.py -v
+```
+
 ## Usage
 
 ### Basic Usage
@@ -114,6 +126,28 @@ Make sure you have write permissions for the files you're trying to update.
 ## License
 
 This project is open source. Feel free to modify and distribute as needed.
+
+## Testing
+
+The project includes comprehensive tests covering:
+
+- **Unit Tests**: Individual function testing with mocked dependencies
+- **Integration Tests**: End-to-end workflow testing
+- **Edge Cases**: Error handling, invalid inputs, missing data
+- **Format Validation**: Supported vs unsupported file types
+- **EXIF Processing**: Date extraction and priority order
+- **macOS Integration**: SetFile command testing
+
+### Test Coverage
+
+- ✅ File format detection
+- ✅ EXIF date extraction with priority order
+- ✅ Creation date updates using SetFile
+- ✅ Directory processing and recursion
+- ✅ Dry-run mode functionality
+- ✅ Error handling and logging
+- ✅ Command line argument parsing
+- ✅ macOS platform detection
 
 ## Contributing
 
